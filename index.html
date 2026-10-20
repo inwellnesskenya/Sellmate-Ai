@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SellMate AI | Kenya Fashion Sales Agent</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Mobile-first scrollbars */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in { animation: fadeIn 0.25s ease-out forwards; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+  <!-- TOP APP NAV BAR -->
+  <header class="bg-slate-950 text-white sticky top-0 z-50 shadow-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 bg-emerald-500 rounded-lg flex items-center justify-center font-black text-slate-950 text-xl shadow-md">
+          S
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-base sm:text-lg leading-tight">SellMate AI</h1>
+            <span class="text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/40">v1.0-prod-ready</span>
+          </div>
+          <p class="text-[11px] text-slate-400">Autonomous Fashion Sales Agent • Kenya</p>
+        </div>
+      </div>
+
+      <!-- Action Center -->
+      <div class="flex items-center space-x-2">
+        <button onclick="openIntegrationsModal()" class="px-2.5 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-network-wired text-amber-400 text-[11px]"></i>
+          <span class="hidden sm:inline">Deployment Bridge</span>
+        </button>
+
+        <!-- View Switcher -->
+        <div class="flex items-center bg-slate-900 p-0.5 rounded-lg border border-slate-800">
+          <button id="navDashboardBtn" onclick="switchView('dashboard')" class="px-3 py-1.5 text-xs font-semibold rounded-md bg-emerald-500 text-slate-950 transition">
+            <i class="fa-solid fa-chart-line mr-1"></i> Dashboard
+          </button>
+          <button id="navChatBtn" onclick="switchView('chat')" class="px-3 py-1.5 text-xs font-semibold rounded-md text-slate-300 hover:text-white transition">
+            <i class="fa-solid fa-mobile-screen mr-1"></i> Chat Preview
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ENVIRONMENT & SIMULATION STATUS BANNER -->
+  <aside class="bg-amber-500/10 border-b border-amber-500/30 text-amber-950 px-4 py-2 text-xs">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-amber-400 text-amber-950 uppercase tracking-wide">
+          <i class="fa-solid fa-flask-vial mr-1"></i> Hybrid Simulation
+        </span>
+        <span class="text-slate-700">
+          Agent logic & inventory are <strong>live and strict</strong>. Meta WhatsApp, Instagram Graph & M-Pesa STK Push are operating via <strong>Client Simulation Sandbox</strong>.
+        </span>
+      </div>
+      <div class="flex items-center gap-3 text-[11px] font-medium text-slate-600">
+        <span>Base Currency: <strong class="text-slate-900">KSh (KES)</strong></span>
+        <span class="text-slate-300">|</span>
+        <button onclick="exportAgentData()" class="text-emerald-700 hover:underline">
+          <i class="fa-solid fa-download mr-1"></i>Export Data
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN APPLICATION CONTENT -->
+  <main class="max-w-7xl mx-auto p-3 sm:p-6 flex-1 w-full">
+
+    <!-- =================================================== -->
+    <!-- VIEW 1: MERCHANT DASHBOARD                         -->
+    <!-- =================================================== -->
+    <div id="viewDashboard" class="space-y-6">
+      
+      <!-- Business Selector & Quick Stats -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Active Business Agent Profile</label>
+          <div class="flex flex-wrap items-center gap-2">
+            <select id="businessSelector" onchange="handleBusinessChange()" class="bg-slate-50 border border-slate-300 font-bold text-slate-800 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none w-64 sm:w-72">
+              <!-- Dynamically populated -->
+            </select>
+            <button onclick="openNewBusinessModal()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-3 py-2 rounded-lg border border-slate-300 transition">
+              <i class="fa-solid fa-plus mr-1"></i> New Store
+            </button>
+            <button onclick="deleteCurrentBusiness()" class="text-xs text-rose-600 hover:bg-rose-50 px-2 py-2 rounded-lg transition" title="Delete current agent">
+              <i class="fa-regular fa-trash-can"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 sm:gap-4 text-center">
+          <div class="bg-slate-50 border border-slate-200 rounded-lg p-2.5 sm:px-4">
+            <div class="text-[11px] text-slate-500 font-medium">Catalogue Items</div>
+            <div id="statItemCount" class="text-base sm:text-lg font-black text-slate-900">0</div>
+          </div>
+          <div class="bg-slate-50 border border-slate-200 rounded-lg p-2.5 sm:px-4">
+            <div class="text-[11px] text-slate-500 font-medium">Units in Stock</div>
+            <div id="statTotalStock" class="text-base sm:text-lg font-black text-slate-900">0</div>
+          </div>
+          <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 sm:px-4">
+            <div class="text-[11px] text-emerald-700 font-medium">Captured Orders</div>
+            <div id="statOrderCount" class="text-base sm:text-lg font-black text-emerald-800">0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Config & Inventory Layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left Column: Business Profile & Orders (5 cols) -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <!-- Agent Configuration Form -->
+          <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-5">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+              <h2 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-emerald-600"></i> Store Guardrails & Policy
+              </h2>
+              <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono font-bold">Strict Inference</span>
+            </div>
+
+            <form id="businessForm" onsubmit="handleSaveBusinessConfig(event)" class="space-y-3 text-xs">
+              <div>
+                <label class="font-semibold text-slate-700 block mb-1">Business Name *</label>
+                <input type="text" id="bizName" required class="w-full border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+              </div>
+
+              <div>
+                <label class="font-semibold text-slate-700 block mb-1">Brand Description / Vibe</label>
+                <textarea id="bizDescription" rows="2" class="w-full border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-emerald-500 focus:outline-none"></textarea>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="font-semibold text-slate-700 block mb-1">WhatsApp / Phone *</label>
+                  <input type="text" id="bizPhone" required placeholder="+254 7XX XXX XXX" class="w-full border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+                <div>
+                  <label class="font-semibold text-slate-700 block mb-1">Physical Location *</label>
+                  <input type="text" id="bizLocation" required placeholder="e.g. Nairobi CBD" class="w-full border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+              </div>
+
+              <div>
+                <label class="font-semibold text-slate-700 block mb-1">Delivery Charges & Timelines *</label>
+                <textarea id="bizDelivery" rows="2" required class="w-full border border-slate-300 rounded-lg p-2 font-mono text-[11px] focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="CBD: KSh 150, Suburbs: KSh 300, Upcountry: KSh 450"></textarea>
+                <span class="text-[10px] text-slate-400">The agent uses this exact policy. It will never invent free delivery.</span>
+              </div>
+
+              <div>
+                <label class="font-semibold text-slate-700 block mb-1">Return & Exchange Policy *</label>
+                <textarea id="bizReturnPolicy" rows="2" required class="w-full border border-slate-300 rounded-lg p-2 text-[11px] focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="Exchange permitted within 48h if unworn. No refunds."></textarea>
+              </div>
+
+              <div>
+                <label class="font-semibold text-slate-700 block mb-1">Payment Instructions (M-Pesa Till / Paybill) *</label>
+                <input type="text" id="bizPaymentInfo" required placeholder="Buy Goods Till: 123456" class="w-full border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <span class="text-[10px] text-slate-400">Agent will always state orders are unverified until payment is checked.</span>
+              </div>
+
+              <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 rounded-lg transition duration-150 shadow-sm flex items-center justify-center gap-2">
+                <i class="fa-solid fa-floppy-disk text-xs"></i> Save Agent Instructions
+              </button>
+            </form>
+          </div>
+
+          <!-- Captured Orders Inbox -->
+          <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-5">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
+              <div>
+                <h2 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                  <i class="fa-solid fa-inbox text-emerald-600"></i> AI Captured Orders
+                </h2>
+                <span class="text-[10px] text-slate-400">Real-time leads from customer chat</span>
+              </div>
+              <span id="orderCountBadge" class="text-[11px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">0</span>
+            </div>
+
+            <div id="ordersList" class="space-y-3 max-h-80 overflow-y-auto pr-1">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Product Catalogue (7 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-5">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4 mb-4">
+              <div>
+                <h2 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                  <i class="fa-solid fa-tags text-emerald-600"></i> Inventory & Price Matrix
+                </h2>
+                <p class="text-xs text-slate-500">Agent references this catalogue strictly. Out of stock items cannot be ordered.</p>
+              </div>
+
+              <div cl
